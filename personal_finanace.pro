@@ -17,10 +17,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    transaction_parser.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    transaction_parser.h
 
 FORMS += \
     mainwindow.ui
