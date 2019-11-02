@@ -18,7 +18,6 @@ QList<Transaction> BNPTransactionParser::parseTransactions(QFile* file)
     while(!in.atEnd())
     {
         QString fileLine = in.readLine();
-        qDebug() << fileLine;
         QStringList lineToken = fileLine.split(";");
 
         if(lineToken.at(0) == "Completed Date")
