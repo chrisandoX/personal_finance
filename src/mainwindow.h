@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSqlQuery>
+#include <QSqlQueryModel>
 #include "transaction_parser.h"
 
 QT_BEGIN_NAMESPACE
