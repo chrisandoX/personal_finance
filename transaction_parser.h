@@ -6,6 +6,29 @@
 #include <QFile>
 #include <QDebug>
 #include <QTextStream>
+#include <QByteArray>
+#include <QList>
+#include <QDate>
+#include <QChar>
+
+struct Transaction {
+    QString date;
+    QString reference;
+    QString category;
+    double  amount;
+};
+
+struct Blood{
+        Blood(QDateTime dt, unsigned int s, unsigned int d, unsigned int p)
+             : dateTime(dt), systole(s), diastole(d), puls(p)
+        {
+        }
+
+    QDateTime dateTime;
+    unsigned int systole;
+    unsigned int diastole;
+    unsigned int puls;
+};
 
 class TransactionParserInterface
 {
@@ -13,13 +36,13 @@ public:
     TransactionParserInterface();
     virtual ~TransactionParserInterface();
 
-    virtual QStringList parseTransactions(QFile* file) = 0;
+    virtual QList<Transaction> parseTransactions(QFile* file) = 0;
 };
 
 class BNPTransactionParser : public TransactionParserInterface
 {
 public:
-    QStringList parseTransactions(QFile* file) override;
+    QList<Transaction> parseTransactions(QFile* file) override;
 
 };
 
