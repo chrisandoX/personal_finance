@@ -25,7 +25,8 @@ public:
     TransactionParserInterface();
     virtual ~TransactionParserInterface();
 
-    virtual QList<Transaction> parseTransactions(QFile* file) = 0;
+    virtual Transaction parseTransaction(QString transaction_string) = 0;
+    virtual QList<Transaction> parseTransactionList(QFile* file) = 0;
     virtual QString parseDate(QString date) = 0;
     virtual QString parseReference(QString reference) = 0;
     virtual QString parseCategory(QString category) = 0;
@@ -36,7 +37,9 @@ public:
 class BNPTransactionParser : public TransactionParserInterface
 {
 public:
-    QList<Transaction> parseTransactions(QFile* file) override;
+
+    Transaction parseTransaction(QString transaction_string) override;
+    QList<Transaction> parseTransactionList(QFile* file) override;
     QString parseDate(QString date) override;
     QString parseCategory(QString category) override;
     QString parseReference(QString reference) override;

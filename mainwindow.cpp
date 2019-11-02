@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     QFile BNP("/Users/chris/tutorial-1/revolute.csv");
     if(BNP.open(QIODevice::ReadOnly))
     {
-        QList<Transaction> transcations = BNPParser->parseTransactions(&BNP);
+        QList<Transaction> transcations = BNPParser->parseTransactionList(&BNP);
 
         QList<Transaction>::iterator i;
         for (i = transcations.begin(); i != transcations.end(); ++i)

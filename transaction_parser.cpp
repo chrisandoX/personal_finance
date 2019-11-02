@@ -10,7 +10,19 @@ TransactionParserInterface::~TransactionParserInterface()
 
 }
 
-QList<Transaction> BNPTransactionParser::parseTransactions(QFile* file)
+Transaction BNPTransactionParser::parseTransaction(QString transaction_string)
+{
+    QStringList lineToken = transaction_string.split(";");
+    Transaction transaction;
+
+    transaction.date = this->parseDate(lineToken.at(0));
+    transaction.reference = this->parseReference(lineToken.at(1));
+    transaction.category = this->parseCategory(lineToken.at(7));
+    transaction.amount = this->parseAmount(lineToken.at(3), lineToken.at(2));
+    return transaction;
+}
+
+QList<Transaction> BNPTransactionParser::parseTransactionList(QFile* file)
 {
     QTextStream in(file);
     QList<Transaction> transactionsList;
@@ -18,19 +30,7 @@ QList<Transaction> BNPTransactionParser::parseTransactions(QFile* file)
     while(!in.atEnd())
     {
         QString fileLine = in.readLine();
-        QStringList lineToken = fileLine.split(";");
-
-        if(lineToken.at(0) == "Completed Date")
-        {
-            continue;
-        }
-
-        Transaction transaction;
-
-        transaction.date = this->parseDate(lineToken.at(0));
-        transaction.reference = this->parseReference(lineToken.at(1));
-        transaction.category = this->parseCategory(lineToken.at(7));
-        transaction.amount = this->parseAmount(lineToken.at(3), lineToken.at(2));
+        Transaction transaction = this->parseTransaction(fileLine);
         transactionsList.append(transaction);
     }
 
