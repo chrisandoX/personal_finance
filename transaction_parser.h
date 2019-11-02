@@ -18,17 +18,6 @@ struct Transaction {
     double  amount;
 };
 
-struct Blood{
-        Blood(QDateTime dt, unsigned int s, unsigned int d, unsigned int p)
-             : dateTime(dt), systole(s), diastole(d), puls(p)
-        {
-        }
-
-    QDateTime dateTime;
-    unsigned int systole;
-    unsigned int diastole;
-    unsigned int puls;
-};
 
 class TransactionParserInterface
 {
