@@ -47,7 +47,8 @@ MainWindow::MainWindow(QWidget *parent)
             query.bindValue(":title", i->reference);
             query.bindValue(":amount", i->amount);
             query.bindValue(":category", i->category);
-            qDebug()<<query.exec()<<endl;
+            query.exec();
+            qDebug()<<query.lastError();
 
             qDebug() << i->date;
             qDebug() << i->reference;

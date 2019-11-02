@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
+#include <QSqlError>
 #include "transaction_parser.h"
 
 QT_BEGIN_NAMESPACE
