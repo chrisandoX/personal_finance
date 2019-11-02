@@ -6,12 +6,12 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    BNPTransactionParser *BNPParser = new BNPTransactionParser;
+    RevoluteTransactionParser *RevoluteParser = new RevoluteTransactionParser;
 
-    QFile BNP("/Users/chris/tutorial-1/revolute.csv");
-    if(BNP.open(QIODevice::ReadOnly))
+    QFile Revolute("/Users/chris/tutorial-1/revolute.csv");
+    if(Revolute.open(QIODevice::ReadOnly))
     {
-        QList<Transaction> transcations = BNPParser->parseTransactionList(&BNP);
+        QList<Transaction> transcations = RevoluteParser->parseTransactionList(&Revolute);
 
         QList<Transaction>::iterator i;
         for (i = transcations.begin(); i != transcations.end(); ++i)
@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
             qDebug() << i->amount;
         }
 
-        BNP.close();
+        Revolute.close();
     }
     else
     {

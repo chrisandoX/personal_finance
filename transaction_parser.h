@@ -34,7 +34,7 @@ public:
     virtual double parseAmount(QString amount_0, QString amount_1) = 0;
 };
 
-class BNPTransactionParser : public TransactionParserInterface
+class RevoluteTransactionParser : public TransactionParserInterface
 {
 public:
 

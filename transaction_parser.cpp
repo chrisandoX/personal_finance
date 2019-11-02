@@ -10,7 +10,7 @@ TransactionParserInterface::~TransactionParserInterface()
 
 }
 
-Transaction BNPTransactionParser::parseTransaction(QString transaction_string)
+Transaction RevoluteTransactionParser::parseTransaction(QString transaction_string)
 {
     QStringList lineToken = transaction_string.split(";");
     Transaction transaction;
@@ -22,7 +22,7 @@ Transaction BNPTransactionParser::parseTransaction(QString transaction_string)
     return transaction;
 }
 
-QList<Transaction> BNPTransactionParser::parseTransactionList(QFile* file)
+QList<Transaction> RevoluteTransactionParser::parseTransactionList(QFile* file)
 {
     QTextStream in(file);
     QList<Transaction> transactionsList;
@@ -40,7 +40,7 @@ QList<Transaction> BNPTransactionParser::parseTransactionList(QFile* file)
     return transactionsList;
 }
 
-QString BNPTransactionParser::parseDate(QString date)
+QString RevoluteTransactionParser::parseDate(QString date)
 {
     QString date_parsed;
     QDate qdate = QDate::fromString(date, "MMMM d");
@@ -58,24 +58,24 @@ QString BNPTransactionParser::parseDate(QString date)
     return date_parsed;
 }
 
-QString BNPTransactionParser::parseCategory(QString category)
+QString RevoluteTransactionParser::parseCategory(QString category)
 {
     QString category_parsed;
     category_parsed = category.remove(QChar(','), Qt::CaseInsensitive);
     return category_parsed;
 }
 
-QString BNPTransactionParser::parseReference(QString reference)
+QString RevoluteTransactionParser::parseReference(QString reference)
 {
     //TODO fix encoding
     return reference;
 }
-double BNPTransactionParser::parseAmount(QString amount)
+double RevoluteTransactionParser::parseAmount(QString amount)
 {
     return amount.toDouble();
 }
 
-double BNPTransactionParser::parseAmount(QString paid_in, QString paid_out)
+double RevoluteTransactionParser::parseAmount(QString paid_in, QString paid_out)
 {
     double amount_parsed;
 
