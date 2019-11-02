@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     RevoluteTransactionParser *RevoluteParser = new RevoluteTransactionParser;
 
-    QFile Revolute("/Users/chris/tutorial-1/revolute.csv");
+    QFile Revolute("/Users/chris/personal_finance_app/personal_finanace/revolute.csv");
     if(Revolute.open(QIODevice::ReadOnly))
     {
 
