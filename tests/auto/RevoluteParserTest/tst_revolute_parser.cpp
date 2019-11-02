@@ -10,7 +10,8 @@ private slots:
     void testTransactionParsing();
     void testParseNegativeAmount();
     void testParseAmountNotNumber();
-
+    void testParsePartialDate();
+    void testParseFullDate();
 };
 
 void RevoluteParserTest::testTransactionParsing()
@@ -42,6 +43,21 @@ void RevoluteParserTest::testParseAmountNotNumber()
     QVERIFY_EXCEPTION_THROWN(parser.parseAmount("", paid_out), char* const);
 }
 
+void RevoluteParserTest::testParsePartialDate()
+{
+    RevoluteTransactionParser parser;
+    QString date = "September 23";
+    int current_year = QDate().currentDate().year();
+    QString test_year = QString::number(current_year)+"-"+"09-23";
+    QVERIFY(parser.parseDate(date) == test_year);
+}
+
+void RevoluteParserTest::testParseFullDate()
+{
+    RevoluteTransactionParser parser;
+    QString date = "2018 September 23";
+    QVERIFY(parser.parseDate(date) == "2018-09-23");
+}
 QTEST_MAIN(RevoluteParserTest)
 
 #include "tst_revolute_parser.moc"
