@@ -50,12 +50,17 @@ QString RevoluteTransactionParser::parseDate(QString date)
        int current_year = QDate().currentDate().year();
        qdate.setDate(current_year, qdate.month(), qdate.day());
        date_parsed = qdate.toString(Qt::ISODate);
+       return date_parsed;
+    }
+
+    qdate = QDate::fromString(date, "yyyy MMMM d");
+    if(qdate.isValid())
+    {
+       date_parsed = qdate.toString(Qt::ISODate);
+       return date_parsed;
     }
     else
-    {
-       date_parsed = QDate::fromString(date, "yyyy MMMM d").toString(Qt::ISODate);
-    }
-    return date_parsed;
+        throw "Date does fit yyyy MMMM d format";
 }
 
 QString RevoluteTransactionParser::parseCategory(QString category)

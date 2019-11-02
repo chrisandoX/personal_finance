@@ -12,6 +12,7 @@ private slots:
     void testParseAmountNotNumber();
     void testParsePartialDate();
     void testParseFullDate();
+    void testParseDateWrongFormat();
 };
 
 void RevoluteParserTest::testTransactionParsing()
@@ -57,6 +58,13 @@ void RevoluteParserTest::testParseFullDate()
     RevoluteTransactionParser parser;
     QString date = "2018 September 23";
     QVERIFY(parser.parseDate(date) == "2018-09-23");
+}
+
+void RevoluteParserTest::testParseDateWrongFormat()
+{
+    RevoluteTransactionParser parser;
+    QString date = "September 23 2019";
+    QVERIFY_EXCEPTION_THROWN(parser.parseDate(date), char* const);
 }
 QTEST_MAIN(RevoluteParserTest)
 
