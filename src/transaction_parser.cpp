@@ -79,8 +79,14 @@ double RevoluteTransactionParser::parseAmount(QString paid_in_string, QString pa
 {
     double amount_parsed;
 
-    double paid_out = paid_out_string.replace(",", ".").toDouble();
-    double paid_in = paid_in_string.replace(",", ".").toDouble();
+    bool to_double_ok;
+    double paid_out = paid_out_string.replace(",", ".").toDouble(&to_double_ok);
+    if(!(to_double_ok || paid_out_string == ""))
+        throw "Paid out is not a number";
+
+    double paid_in = paid_in_string.replace(",", ".").toDouble(&to_double_ok);
+    if(!(to_double_ok || paid_in_string == ""))
+        throw "Paid in is not a number";
 
     if(paid_out < 0)
         throw "Paid out amount cannot be negative";

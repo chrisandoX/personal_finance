@@ -9,6 +9,7 @@ class RevoluteParserTest : public QObject
 private slots:
     void testTransactionParsing();
     void testParseNegativeAmount();
+    void testParseAmountNotNumber();
 
 };
 
@@ -28,6 +29,15 @@ void RevoluteParserTest::testParseNegativeAmount()
     RevoluteTransactionParser parser;
     QString paid_in = "-4,58";
     QString paid_out = "-2,0";
+    QVERIFY_EXCEPTION_THROWN(parser.parseAmount(paid_in, ""), char* const);
+    QVERIFY_EXCEPTION_THROWN(parser.parseAmount("", paid_out), char* const);
+}
+
+void RevoluteParserTest::testParseAmountNotNumber()
+{
+    RevoluteTransactionParser parser;
+    QString paid_in = "random";
+    QString paid_out = "number";
     QVERIFY_EXCEPTION_THROWN(parser.parseAmount(paid_in, ""), char* const);
     QVERIFY_EXCEPTION_THROWN(parser.parseAmount("", paid_out), char* const);
 }
