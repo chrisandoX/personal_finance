@@ -1,33 +1,34 @@
 #include <QtTest>
 
-// add necessary includes here
+#include "transaction_parser.h"
 
 class RevoluteParserTest : public QObject
 {
     Q_OBJECT
 
-public:
-    RevoluteParserTest();
-    ~RevoluteParserTest();
-
 private slots:
-    void test_case1();
+    void testTransactionParsing();
+    void testParseNegativeAmount();
 
 };
 
-RevoluteParserTest::RevoluteParserTest()
+void RevoluteParserTest::testTransactionParsing()
 {
-
+    RevoluteTransactionParser parser;
+    QString transaction_string = "October 19;IKEA;4,58;;CHF 5,00;;12,24;restaurants";
+    Transaction parsed_transaction = parser.parseTransaction(transaction_string);
+    QVERIFY(parsed_transaction.date == "2019-10-19");
+    QVERIFY(parsed_transaction.reference == "IKEA");
+    QVERIFY(parsed_transaction.category == "restaurants");
+    QCOMPARE(parsed_transaction.amount, -4.58);
 }
 
-RevoluteParserTest::~RevoluteParserTest()
+void RevoluteParserTest::testParseNegativeAmount()
 {
-
-}
-
-void RevoluteParserTest::test_case1()
-{
-
+    RevoluteTransactionParser parser;
+    QString amount_string = "-4,58";
+    double amount_parsed = parser.parseAmount(amount_string);
+    QCOMPARE(amount_parsed, 4.58);
 }
 
 QTEST_MAIN(RevoluteParserTest)
