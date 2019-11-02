@@ -46,7 +46,9 @@ QString BNPTransactionParser::parseDate(QString date)
     QDate qdate = QDate::fromString(date, "MMMM d");
     if(qdate.isValid())
     {
-        //TODO fix current date
+       // Replace default year to current year
+       int current_year = QDate().currentDate().year();
+       qdate.setDate(current_year, qdate.month(), qdate.day());
        date_parsed = qdate.toString(Qt::ISODate);
     }
     else
