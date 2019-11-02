@@ -47,13 +47,11 @@ MainWindow::MainWindow(QWidget *parent)
             query.bindValue(":title", i->reference);
             query.bindValue(":amount", i->amount);
             query.bindValue(":category", i->category);
-            query.exec();
-            qDebug()<<query.lastError();
 
-            qDebug() << i->date;
-            qDebug() << i->reference;
-            qDebug() << i->category;
-            qDebug() << i->amount;
+            if(!query.exec())
+                qDebug()<<query.lastError();
+
+            qDebug() << i->date << i->reference << i->amount << i->category;
         }
 
         Revolute.close();
