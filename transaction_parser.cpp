@@ -27,6 +27,9 @@ QList<Transaction> BNPTransactionParser::parseTransactionList(QFile* file)
     QTextStream in(file);
     QList<Transaction> transactionsList;
 
+    // Read first line and do nothing to get rid of header
+    in.readLine();
+
     while(!in.atEnd())
     {
         QString fileLine = in.readLine();
