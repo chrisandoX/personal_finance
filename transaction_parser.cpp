@@ -27,44 +27,68 @@ QList<Transaction> BNPTransactionParser::parseTransactions(QFile* file)
         }
 
         Transaction transaction;
-        QString date = lineToken.at(0);
-        QDate qdate = QDate::fromString(date, "MMMM d");
-        if(qdate.isValid())
-        {
-            //TODO fix current date
-           date = qdate.toString(Qt::ISODate);
-        }
-        else
-        {
-           date = QDate::fromString(date, "yyyy MMMM d").toString(Qt::ISODate);
-        }
-        transaction.date = date;
-        transaction.reference = lineToken.at(1);
 
-        QString category = lineToken.at(7);
-        category = category.remove(QChar(','), Qt::CaseInsensitive);
-        transaction.category = category;
-
-        QString paid_in = lineToken.at(3);
-        QString paid_out = lineToken.at(2);
-        double amount;
-        if(paid_in == "")
-        {
-            //TODO automatically detect wheter . or ,
-            amount = paid_out.replace(",", ".").toDouble();
-        }
-        else if (paid_out == "")
-        {
-            amount = paid_in.replace(",", ".").toDouble();
-        }
-        else{
-            amount = 0;
-            qDebug() << "Transaction has no value";
-        }
-        transaction.amount = amount;
+        transaction.date = this->parseDate(lineToken.at(0));
+        transaction.reference = this->parseReference(lineToken.at(1));
+        transaction.category = this->parseCategory(lineToken.at(7));
+        transaction.amount = this->parseAmount(lineToken.at(3), lineToken.at(2));
         transactionsList.append(transaction);
     }
 
     return transactionsList;
 }
+
+QString BNPTransactionParser::parseDate(QString date)
+{
+    QString date_parsed;
+    QDate qdate = QDate::fromString(date, "MMMM d");
+    if(qdate.isValid())
+    {
+        //TODO fix current date
+       date_parsed = qdate.toString(Qt::ISODate);
+    }
+    else
+    {
+       date_parsed = QDate::fromString(date, "yyyy MMMM d").toString(Qt::ISODate);
+    }
+    return date_parsed;
+}
+
+QString BNPTransactionParser::parseCategory(QString category)
+{
+    QString category_parsed;
+    category_parsed = category.remove(QChar(','), Qt::CaseInsensitive);
+    return category_parsed;
+}
+
+QString BNPTransactionParser::parseReference(QString reference)
+{
+    //TODO fix encoding
+    return reference;
+}
+double BNPTransactionParser::parseAmount(QString amount)
+{
+    return amount.toDouble();
+}
+
+double BNPTransactionParser::parseAmount(QString paid_in, QString paid_out)
+{
+    double amount_parsed;
+
+    if(paid_in == "")
+    {
+        //TODO automatically detect wheter . or ,
+        amount_parsed = paid_out.replace(",", ".").toDouble()*(-1.0);
+    }
+    else if (paid_out == "")
+    {
+        amount_parsed = paid_in.replace(",", ".").toDouble();
+    }
+    else{
+        amount_parsed = 0;
+        qDebug() << "Transaction has no value";
+    }
+    return amount_parsed;
+}
+
 
