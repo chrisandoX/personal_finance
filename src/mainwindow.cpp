@@ -41,13 +41,12 @@ MainWindow::MainWindow(QWidget *parent)
         for (i = transcations.begin(); i != transcations.end(); ++i)
         {
             QSqlQuery query;
-            query.prepare("INSERT INTO transactions(date, title, amount, category, balance) "
-                           "VALUES (:date, :title, :amount, :category, :balance)");
+            query.prepare("INSERT INTO transactions(date, title, amount, category) "
+                           "VALUES (:date, :title, :amount, :category)");
             query.bindValue(":date", i->date);
             query.bindValue(":title", i->reference);
             query.bindValue(":amount", i->amount);
             query.bindValue(":category", i->category);
-            query.bindValue(":balance", 0);
             qDebug()<<query.exec()<<endl;
 
             qDebug() << i->date;
