@@ -75,23 +75,30 @@ double RevoluteTransactionParser::parseAmount(QString amount)
     return amount.toDouble();
 }
 
-double RevoluteTransactionParser::parseAmount(QString paid_in, QString paid_out)
+double RevoluteTransactionParser::parseAmount(QString paid_in_string, QString paid_out_string)
 {
     double amount_parsed;
 
-    if(paid_in == "")
+    double paid_out = paid_out_string.replace(",", ".").toDouble();
+    double paid_in = paid_in_string.replace(",", ".").toDouble();
+
+    if(paid_out < 0)
+        throw "Paid out amount cannot be negative";
+
+    if(paid_in < 0)
+        throw "Paid in amount cannot be negative";
+
+    if(paid_in_string == "")
     {
         //TODO automatically detect wheter . or ,
-        amount_parsed = paid_out.replace(",", ".").toDouble()*(-1.0);
+        amount_parsed = paid_out*(-1.0);
     }
-    else if (paid_out == "")
+    else if (paid_out_string == "")
     {
-        amount_parsed = paid_in.replace(",", ".").toDouble();
+        amount_parsed = paid_in;
     }
-    else{
-        amount_parsed = 0;
-        qDebug() << "Transaction has no value";
-    }
+    else
+        throw "Invalid amount entry";
     return amount_parsed;
 }
 

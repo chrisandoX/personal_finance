@@ -11,7 +11,16 @@ MainWindow::MainWindow(QWidget *parent)
     QFile Revolute("/Users/chris/tutorial-1/revolute.csv");
     if(Revolute.open(QIODevice::ReadOnly))
     {
-        QList<Transaction> transcations = RevoluteParser->parseTransactionList(&Revolute);
+
+        QList<Transaction> transcations;
+        try
+        {
+            transcations = RevoluteParser->parseTransactionList(&Revolute);
+        }
+        catch (const char* exception) // catch exceptions of type const char*
+        {
+           qDebug() << "Error: " << exception;
+        }
 
         QList<Transaction>::iterator i;
         for (i = transcations.begin(); i != transcations.end(); ++i)

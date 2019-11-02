@@ -44,7 +44,7 @@ public:
     QString parseCategory(QString category) override;
     QString parseReference(QString reference) override;
     double parseAmount(QString amount) override;
-    double parseAmount(QString paid_in, QString paid_out) override;
+    double parseAmount(QString paid_in_string, QString paid_out_string) override;
 
 };
 
