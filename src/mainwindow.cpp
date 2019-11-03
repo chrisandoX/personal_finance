@@ -29,10 +29,22 @@ MainWindow::MainWindow(QWidget *parent)
         return;
     }
 
+    BNPTransactionParser *BNPParser = new BNPTransactionParser;
+
+    QFile BNP("/Users/chris/personal_finance_app/personal_finanace/bnp.csv");
+    if(!BNP.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "File not found";
+        return;
+    }
+
+
     QList<Transaction> transcations;
     try
     {
-        transcations = RevoluteParser->parseTransactionList(&Revolute);
+        transcations.append(BNPParser->parseTransactionList(&BNP));
+        transcations.append(RevoluteParser->parseTransactionList(&Revolute));
+        BNP.close();
         Revolute.close();
     }
     catch (const char* exception) // catch exceptions of type const char*
