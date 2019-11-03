@@ -161,7 +161,14 @@ QString BNPTransactionParser::parseDate(QString date)
 
 QString BNPTransactionParser::parseCategory(QString category)
 {
-    return category;
+    QString category_maped;
+    if(!bnp_category_map.contains(category)){
+        qDebug() << "Category " << category <<" does not exists";
+        throw "Category does not exist";
+    }
+    else
+        category_maped  = bnp_category_map[category];
+    return category_maped;
 }
 
 QString BNPTransactionParser::parseReference(QString reference)

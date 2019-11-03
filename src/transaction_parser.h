@@ -10,6 +10,7 @@
 #include <QList>
 #include <QDate>
 #include <QChar>
+#include "bnpcategorymap.h"
 
 struct Transaction {
     QString date;
