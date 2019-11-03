@@ -2,7 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSqlQuery>
+#include <QSqlQueryModel>
+#include <QSqlError>
 #include "transaction_parser.h"
+#include "dbmanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

@@ -1,3 +1,4 @@
 TEMPLATE = subdirs
 
-SUBDIRS += RevoluteParserTest
+SUBDIRS += RevoluteParserTest \
+           DbManagerTest
