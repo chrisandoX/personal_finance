@@ -9,16 +9,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     QString database_name = "/Users/chris/personal_finance_app/personal_finanace/phinance.db";
 
-    if(!QFile::exists(database_name))
-        qDebug() << "Database file does not exists";
-    else{
-        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-        db.setDatabaseName(database_name);
-        if(!db.open())
-          qDebug() << "Failed to open database";
-        else
-          qDebug() << "Database opened";
-     }
+    if (db.isOpen())
+    {
+        db.createTable();
+    }
+    else
+    {
+        qDebug() << "Database is not open!";
+    }
 
 
     RevoluteTransactionParser *RevoluteParser = new RevoluteTransactionParser;
