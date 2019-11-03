@@ -39,18 +39,14 @@ MainWindow::MainWindow(QWidget *parent)
         QList<Transaction>::iterator i;
         for (i = transcations.begin(); i != transcations.end(); ++i)
         {
-            QSqlQuery query;
-            query.prepare("INSERT INTO transactions(date, title, amount, category) "
-                           "VALUES (:date, :title, :amount, :category)");
-            query.bindValue(":date", i->date);
-            query.bindValue(":title", i->reference);
-            query.bindValue(":amount", i->amount);
-            query.bindValue(":category", i->category);
-
-            if(!query.exec())
-                qDebug()<<query.lastError();
-
-            qDebug() << i->date << i->reference << i->amount << i->category;
+            if(db.isOpen())
+            {
+                db.addTransaction(*i);
+            }
+            else
+            {
+                qDebug() << "Database is not open!";
+            }
         }
 
         Revolute.close();

@@ -6,6 +6,8 @@
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QDebug>
+#include "transaction_parser.h"
+
 #define SQL(...) #__VA_ARGS__
 
 /**
@@ -51,6 +53,13 @@ public:
      * @return true - 'transaction' table created successfully, false - table not created
      */
     bool createTable();
+
+    /**
+     * @brief Add transaction data to db
+     * @param transaction - date, title, amount, category of transaction to add
+     * @return true - transaction added successfully, false - transaction not added
+     */
+    bool addTransaction(Transaction transaction);
 
 private:
     QSqlDatabase m_db;

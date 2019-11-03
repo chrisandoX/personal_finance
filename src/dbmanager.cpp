@@ -1,4 +1,4 @@
-#include <dbmanager.h>
+﻿#include <dbmanager.h>
 
 
 DbManager::DbManager(const QString &path)
@@ -53,6 +53,34 @@ bool DbManager::createTable()
         qDebug() << "Database Created";
     }
 
+    return success;
+}
+
+bool DbManager::addTransaction(Transaction transaction)
+{
+    bool success = false;
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO transactions(date, title, amount, category) "
+                   "VALUES (:date, :title, :amount, :category)");
+    query.bindValue(":date", transaction.date);
+    query.bindValue(":title", transaction.reference);
+    query.bindValue(":amount", transaction.amount);
+    query.bindValue(":category", transaction.category);
+
+    if(!query.exec())
+    {
+        qDebug()<<query.lastError();
+        success = false;
+    }
+    else
+    {
+        success = true;
+        qDebug() << transaction.date
+                 << transaction.reference
+                 << transaction.amount
+                 << transaction.category;
+    }
     return success;
 }
 
