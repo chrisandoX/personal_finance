@@ -7,7 +7,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    QString database_name = "/Users/chris/personal_finance_app/personal_finanace/phinance.db";
+    QString database_path = "/Users/chris/personal_finance_app/personal_finanace/phinance.db";
+    DbManager db(database_path);
 
     if (db.isOpen())
     {
