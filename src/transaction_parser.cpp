@@ -60,10 +60,10 @@ Transaction RevoluteTransactionParser::parseTransaction(QString transaction_stri
     QStringList lineToken = transaction_string.split(";");
     Transaction transaction;
 
-    transaction.date = this->parseDate(lineToken.at(0));
-    transaction.reference = this->parseReference(lineToken.at(1));
-    transaction.category = this->parseCategory(lineToken.at(7));
-    transaction.amount = this->parseAmount(lineToken.at(3), lineToken.at(2));
+    transaction.date = parseDate(lineToken.at(0));
+    transaction.reference = parseReference(lineToken.at(1));
+    transaction.category = parseCategory(lineToken.at(7));
+    transaction.amount = parseAmount(lineToken.at(3), lineToken.at(2));
     return transaction;
 }
 
@@ -74,7 +74,7 @@ QList<Transaction> RevoluteTransactionParser::parseTransactionStream(QTextStream
     while(!in->atEnd())
     {
         QString fileLine = in->readLine();
-        Transaction transaction = this->parseTransaction(fileLine);
+        Transaction transaction = parseTransaction(fileLine);
         transactionsList.append(transaction);
     }
 
@@ -160,10 +160,10 @@ Transaction BNPTransactionParser::parseTransaction(QString transaction_string)
     QStringList lineToken = transaction_string.split(";");
     Transaction transaction;
 
-    transaction.date = this->parseDate(lineToken.at(0));
-    transaction.reference = this->parseReference(lineToken.at(2));
-    transaction.category = this->parseCategory(lineToken.at(1));
-    transaction.amount = this->parseAmount(lineToken.at(3));
+    transaction.date = parseDate(lineToken.at(0));
+    transaction.reference = parseReference(lineToken.at(2));
+    transaction.category = parseCategory(lineToken.at(1));
+    transaction.amount = parseAmount(lineToken.at(3));
     return transaction;
 }
 
@@ -174,7 +174,7 @@ QList<Transaction> BNPTransactionParser::parseTransactionStream(QTextStream *in)
     while(!in->atEnd())
     {
         QString fileLine = in->readLine();
-        Transaction transaction = this->parseTransaction(fileLine);
+        Transaction transaction = parseTransaction(fileLine);
         transactionsList.append(transaction);
     }
 
