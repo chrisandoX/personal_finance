@@ -1,5 +1,50 @@
 #include "transaction_parser.h"
 
+TransactionParser::TransactionParser()
+{
+
+}
+
+QList<Transaction> TransactionParser::parseTransactionFile(QFile* file)
+{
+    QTextStream in(file);
+    in.setCodec("UTF-8");
+    QList<Transaction> transactionsList;
+
+    QString bank_type = parseHeader(in.readLine());
+    qDebug() << bank_type;
+
+    if(bank_type == "revolute_bank")
+    {
+        RevoluteTransactionParser *RevoluteParser = new RevoluteTransactionParser;
+        transactionsList.append(RevoluteParser->parseTransactionStream(&in));
+
+    }
+    else if (bank_type == "bnp_bank")
+    {
+        BNPTransactionParser *BNPParser = new BNPTransactionParser;
+        // Remove remaining header lines
+        in.readLine();
+        in.readLine();
+        transactionsList.append(BNPParser->parseTransactionStream(&in));
+    }
+    return transactionsList;
+}
+
+QString TransactionParser::parseHeader(QString header)
+{
+    QStringList header_list = header.split(";");
+    if(header_list[0].contains("Compte de chèques")) {
+        return "bnp_bank";
+    }
+    else if (header_list[0].contains("Completed Date")) {
+        return "revolute_bank";
+    }
+    else {
+        throw "Unrecognized header file, is your bank defined?";
+    }
+}
+
 TransactionParserInterface::TransactionParserInterface()
 {
 
@@ -22,17 +67,13 @@ Transaction RevoluteTransactionParser::parseTransaction(QString transaction_stri
     return transaction;
 }
 
-QList<Transaction> RevoluteTransactionParser::parseTransactionList(QFile* file)
+QList<Transaction> RevoluteTransactionParser::parseTransactionStream(QTextStream* in)
 {
-    QTextStream in(file);
     QList<Transaction> transactionsList;
 
-    // Read first line and do nothing to get rid of header
-    in.readLine();
-
-    while(!in.atEnd())
+    while(!in->atEnd())
     {
-        QString fileLine = in.readLine();
+        QString fileLine = in->readLine();
         Transaction transaction = this->parseTransaction(fileLine);
         transactionsList.append(transaction);
     }
@@ -126,19 +167,13 @@ Transaction BNPTransactionParser::parseTransaction(QString transaction_string)
     return transaction;
 }
 
-QList<Transaction> BNPTransactionParser::parseTransactionList(QFile *file)
+QList<Transaction> BNPTransactionParser::parseTransactionStream(QTextStream *in)
 {
-    QTextStream in(file);
-    in.setCodec("UTF-8");
     QList<Transaction> transactionsList;
 
-    // Read first line 3 times and do nothing to get rid of header
-    for(int i = 0; i<3; i++)
-        in.readLine();
-
-    while(!in.atEnd())
+    while(!in->atEnd())
     {
-        QString fileLine = in.readLine();
+        QString fileLine = in->readLine();
         Transaction transaction = this->parseTransaction(fileLine);
         transactionsList.append(transaction);
     }

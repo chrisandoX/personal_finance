@@ -19,17 +19,12 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << "Database is not open!";
     }
 
-
-    RevoluteTransactionParser *RevoluteParser = new RevoluteTransactionParser;
-
     QFile Revolute("/Users/chris/personal_finance_app/personal_finanace/revolute.csv");
     if(!Revolute.open(QIODevice::ReadOnly))
     {
         qDebug() << "File not found";
         return;
     }
-
-    BNPTransactionParser *BNPParser = new BNPTransactionParser;
 
     QFile BNP("/Users/chris/personal_finance_app/personal_finanace/bnp.csv");
     if(!BNP.open(QIODevice::ReadOnly))
@@ -38,12 +33,13 @@ MainWindow::MainWindow(QWidget *parent)
         return;
     }
 
+    TransactionParser *Parser = new TransactionParser;
 
     QList<Transaction> transcations;
     try
     {
-        transcations.append(BNPParser->parseTransactionList(&BNP));
-        transcations.append(RevoluteParser->parseTransactionList(&Revolute));
+        transcations.append(Parser->parseTransactionFile(&Revolute));
+        transcations.append(Parser->parseTransactionFile(&BNP));
         BNP.close();
         Revolute.close();
     }
