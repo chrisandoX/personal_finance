@@ -113,6 +113,16 @@ double RevoluteTransactionParser::parseAmount(QString paid_in_string, QString pa
     return amount_parsed;
 }
 
+BNPTransactionParser::BNPTransactionParser()
+{
+    QMapIterator<QString, QString> i(bnp_category_map);
+    while (i.hasNext()) {
+        i.next();
+        bnp_category_map_normalized.insert(
+            i.key().normalized(QString::NormalizationForm_KD),
+            i.value());
+    }
+}
 
 
 Transaction BNPTransactionParser::parseTransaction(QString transaction_string)
@@ -161,14 +171,13 @@ QString BNPTransactionParser::parseDate(QString date)
 
 QString BNPTransactionParser::parseCategory(QString category)
 {
-    QString category_maped;
-    if(!bnp_category_map.contains(category)){
+    QString category_normalized = category.normalized(QString::NormalizationForm_KD);
+    if(!bnp_category_map_normalized.contains(category_normalized)){
         qDebug() << "Category " << category <<" does not exists";
         throw "Category does not exist";
     }
     else
-        category_maped  = bnp_category_map[category];
-    return category_maped;
+        return bnp_category_map_normalized[category_normalized];
 }
 
 QString BNPTransactionParser::parseReference(QString reference)
