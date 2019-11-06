@@ -16,17 +16,17 @@ QList<Transaction> TransactionParser::parseTransactionFile(QFile* file)
 
     if(bank_type == "revolute_bank")
     {
-        RevoluteTransactionParser *RevoluteParser = new RevoluteTransactionParser;
-        transactionsList.append(RevoluteParser->parseTransactionStream(&in));
+        RevoluteTransactionParser RevoluteParser;
+        transactionsList.append(RevoluteParser.parseTransactionStream(&in));
 
     }
     else if (bank_type == "bnp_bank")
     {
-        BNPTransactionParser *BNPParser = new BNPTransactionParser;
+        BNPTransactionParser BNPParser;
         // Remove remaining header lines
         in.readLine();
         in.readLine();
-        transactionsList.append(BNPParser->parseTransactionStream(&in));
+        transactionsList.append(BNPParser.parseTransactionStream(&in));
     }
     return transactionsList;
 }
