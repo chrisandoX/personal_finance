@@ -11,6 +11,7 @@
 #include <QDate>
 #include <QChar>
 #include "bnpcategorymap.h"
+#include <QTextCodec>
 
 struct Transaction {
     QString date;

@@ -140,6 +140,7 @@ Transaction BNPTransactionParser::parseTransaction(QString transaction_string)
 QList<Transaction> BNPTransactionParser::parseTransactionList(QFile *file)
 {
     QTextStream in(file);
+    in.setCodec("UTF-8");
     QList<Transaction> transactionsList;
 
     // Read first line 3 times and do nothing to get rid of header
