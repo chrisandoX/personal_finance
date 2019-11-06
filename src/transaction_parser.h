@@ -10,6 +10,8 @@
 #include <QList>
 #include <QDate>
 #include <QChar>
+#include "bnpcategorymap.h"
+#include <QTextCodec>
 
 struct Transaction {
     QString date;
@@ -46,6 +48,19 @@ public:
     double parseAmount(QString amount) override;
     double parseAmount(QString paid_in_string, QString paid_out_string) override;
 
+};
+
+class BNPTransactionParser : public TransactionParserInterface
+{
+public:
+
+    Transaction parseTransaction(QString transaction_string) override;
+    QList<Transaction> parseTransactionList(QFile* file) override;
+    QString parseDate(QString date) override;
+    QString parseCategory(QString category) override;
+    QString parseReference(QString reference) override;
+    double parseAmount(QString amount) override;
+    double parseAmount(QString amount_0, QString amount_1) override;
 };
 
 #endif // TRANSACTION_PARSER_H

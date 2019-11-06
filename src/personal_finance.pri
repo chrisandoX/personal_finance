@@ -7,4 +7,5 @@ SOURCES += \
 HEADERS += \
     mainwindow.h \
     transaction_parser.h \
-    dbmanager.h
+    dbmanager.h \
+    bnpcategorymap.h

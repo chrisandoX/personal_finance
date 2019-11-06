@@ -114,3 +114,77 @@ double RevoluteTransactionParser::parseAmount(QString paid_in_string, QString pa
 }
 
 
+Transaction BNPTransactionParser::parseTransaction(QString transaction_string)
+{
+    QStringList lineToken = transaction_string.split(";");
+    Transaction transaction;
+
+    transaction.date = this->parseDate(lineToken.at(0));
+    transaction.reference = this->parseReference(lineToken.at(2));
+    transaction.category = this->parseCategory(lineToken.at(1));
+    transaction.amount = this->parseAmount(lineToken.at(3));
+    return transaction;
+}
+
+QList<Transaction> BNPTransactionParser::parseTransactionList(QFile *file)
+{
+    QTextStream in(file);
+    in.setCodec("UTF-8");
+    QList<Transaction> transactionsList;
+
+    // Read first line 3 times and do nothing to get rid of header
+    for(int i = 0; i<3; i++)
+        in.readLine();
+
+    while(!in.atEnd())
+    {
+        QString fileLine = in.readLine();
+        Transaction transaction = this->parseTransaction(fileLine);
+        transactionsList.append(transaction);
+    }
+
+    return transactionsList;
+}
+
+QString BNPTransactionParser::parseDate(QString date)
+{
+    QString date_parsed;
+    QDate qdate = QDate::fromString(date, "dd-MM-yyyy");
+    if(qdate.isValid())
+    {
+       date_parsed = qdate.toString(Qt::ISODate);
+       return date_parsed;
+    }
+    else
+        throw "Date does fit dd-MM-yyyy format";
+}
+
+QString BNPTransactionParser::parseCategory(QString category)
+{
+    QString category_normalized = category.normalized(QString::NormalizationForm_KD);
+    if(!bnp_category_map_normalized.contains(category_normalized)){
+        qDebug() << "Category " << category <<" does not exists";
+        throw "Category does not exist";
+    }
+    else
+        return bnp_category_map_normalized[category_normalized];
+}
+
+QString BNPTransactionParser::parseReference(QString reference)
+{
+    return reference;
+}
+
+double BNPTransactionParser::parseAmount(QString amount)
+{
+    bool to_double_ok;
+    double amount_parsed = amount.toDouble(&to_double_ok);
+    if(!to_double_ok)
+         throw "Amount in is not a number";
+    return amount_parsed;
+}
+
+double BNPTransactionParser::parseAmount(QString amount_0, QString amount_1)
+{
+    return 0;
+}
