@@ -54,7 +54,6 @@ class BNPTransactionParser : public TransactionParserInterface
 {
 public:
 
-    BNPTransactionParser();
     Transaction parseTransaction(QString transaction_string) override;
     QList<Transaction> parseTransactionList(QFile* file) override;
     QString parseDate(QString date) override;
@@ -62,10 +61,6 @@ public:
     QString parseReference(QString reference) override;
     double parseAmount(QString amount) override;
     double parseAmount(QString amount_0, QString amount_1) override;
-
-private:
-    QMap<QString, QString> bnp_category_map_normalized;
-
 };
 
 #endif // TRANSACTION_PARSER_H

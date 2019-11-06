@@ -113,17 +113,6 @@ double RevoluteTransactionParser::parseAmount(QString paid_in_string, QString pa
     return amount_parsed;
 }
 
-BNPTransactionParser::BNPTransactionParser()
-{
-    QMapIterator<QString, QString> i(bnp_category_map);
-    while (i.hasNext()) {
-        i.next();
-        bnp_category_map_normalized.insert(
-            i.key().normalized(QString::NormalizationForm_KD),
-            i.value());
-    }
-}
-
 
 Transaction BNPTransactionParser::parseTransaction(QString transaction_string)
 {
