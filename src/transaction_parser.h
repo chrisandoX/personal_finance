@@ -19,7 +19,18 @@ struct Transaction {
     QString category;
     double  amount;
 };
-
+class TransactionParser
+{
+public:
+    enum BankBrand
+    {
+        REVOLUTE = 0,
+        BNP = 1
+    };
+    TransactionParser();
+    QList<Transaction> parseTransactionFile(QFile* file);
+    BankBrand parseHeader(QString header);
+};
 
 class TransactionParserInterface
 {
@@ -28,7 +39,7 @@ public:
     virtual ~TransactionParserInterface();
 
     virtual Transaction parseTransaction(QString transaction_string) = 0;
-    virtual QList<Transaction> parseTransactionList(QFile* file) = 0;
+    virtual QList<Transaction> parseTransactionStream(QTextStream* in) = 0;
     virtual QString parseDate(QString date) = 0;
     virtual QString parseReference(QString reference) = 0;
     virtual QString parseCategory(QString category) = 0;
@@ -41,7 +52,7 @@ class RevoluteTransactionParser : public TransactionParserInterface
 public:
 
     Transaction parseTransaction(QString transaction_string) override;
-    QList<Transaction> parseTransactionList(QFile* file) override;
+    QList<Transaction> parseTransactionStream(QTextStream* in) override;
     QString parseDate(QString date) override;
     QString parseCategory(QString category) override;
     QString parseReference(QString reference) override;
@@ -55,7 +66,7 @@ class BNPTransactionParser : public TransactionParserInterface
 public:
 
     Transaction parseTransaction(QString transaction_string) override;
-    QList<Transaction> parseTransactionList(QFile* file) override;
+    QList<Transaction> parseTransactionStream(QTextStream* in) override;
     QString parseDate(QString date) override;
     QString parseCategory(QString category) override;
     QString parseReference(QString reference) override;
