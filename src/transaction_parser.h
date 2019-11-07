@@ -22,9 +22,14 @@ struct Transaction {
 class TransactionParser
 {
 public:
+    enum BankBrand
+    {
+        REVOLUTE = 0,
+        BNP = 1
+    };
     TransactionParser();
     QList<Transaction> parseTransactionFile(QFile* file);
-    QString parseHeader(QString header);
+    BankBrand parseHeader(QString header);
 };
 
 class TransactionParserInterface

@@ -11,16 +11,16 @@ QList<Transaction> TransactionParser::parseTransactionFile(QFile* file)
     in.setCodec("UTF-8");
     QList<Transaction> transactionsList;
 
-    QString bank_type = parseHeader(in.readLine());
+    BankBrand bank_type = parseHeader(in.readLine());
     qDebug() << bank_type;
 
-    if(bank_type == "revolute_bank")
+    if(bank_type == REVOLUTE)
     {
         RevoluteTransactionParser RevoluteParser;
         transactionsList.append(RevoluteParser.parseTransactionStream(&in));
 
     }
-    else if (bank_type == "bnp_bank")
+    else if (bank_type == BNP)
     {
         BNPTransactionParser BNPParser;
         // Remove remaining header lines
@@ -31,14 +31,14 @@ QList<Transaction> TransactionParser::parseTransactionFile(QFile* file)
     return transactionsList;
 }
 
-QString TransactionParser::parseHeader(QString header)
+TransactionParser::BankBrand TransactionParser::parseHeader(QString header)
 {
     QStringList header_list = header.split(";");
     if(header_list[0].contains("Compte de chèques")) {
-        return "bnp_bank";
+        return BNP;
     }
     else if (header_list[0].contains("Completed Date")) {
-        return "revolute_bank";
+        return REVOLUTE;
     }
     else {
         throw "Unrecognized header file, is your bank defined?";
