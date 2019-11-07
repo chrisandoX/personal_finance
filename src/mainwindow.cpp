@@ -6,8 +6,31 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+}
 
-    QString database_path = "/Users/chris/personal_finance_app/personal_finanace/phinance.db";
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    QMessageBox msgBox;
+    qDebug() << "Selecting the file";
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::ExistingFile);
+    dialog.setViewMode(QFileDialog::Detail);
+    dialog.setNameFilter(tr("CSV (*.csv)"));
+    QStringList fileNames;
+    if (dialog.exec()) {
+        fileNames = dialog.selectedFiles();
+    }
+    else
+        return;
+    qDebug() << fileNames;
+
+    QString database_path = "phinance.db";
     DbManager db(database_path);
 
     if (db.isOpen())
@@ -19,15 +42,8 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << "Database is not open!";
     }
 
-    QFile Revolute("/Users/chris/personal_finance_app/personal_finanace/revolute.csv");
-    if(!Revolute.open(QIODevice::ReadOnly))
-    {
-        qDebug() << "File not found";
-        return;
-    }
-
-    QFile BNP("/Users/chris/personal_finance_app/personal_finanace/bnp.csv");
-    if(!BNP.open(QIODevice::ReadOnly))
+    QFile file(fileNames[0]);
+    if(!file.open(QIODevice::ReadOnly))
     {
         qDebug() << "File not found";
         return;
@@ -38,12 +54,9 @@ MainWindow::MainWindow(QWidget *parent)
     QList<Transaction> transcations;
     try
     {
-        transcations.append(Parser->parseTransactionFile(&Revolute));
-        transcations.append(Parser->parseTransactionFile(&BNP));
-        BNP.close();
-        Revolute.close();
+        transcations.append(Parser->parseTransactionFile(&file));
     }
-    catch (const char* exception) // catch exceptions of type const char*
+    catch (const char* exception)
     {
        qDebug() << "Error: " << exception;
     }
@@ -53,17 +66,15 @@ MainWindow::MainWindow(QWidget *parent)
     {
         if(db.isOpen())
         {
-            db.addTransaction(*i);
+            if(!db.addTransaction(*i)){
+                qDebug() << "Failed to load transaction" << i->reference;
+            }
         }
         else
         {
             qDebug() << "Database is not open!";
         }
     }
+    msgBox.setText("All transactions loaded");
+    msgBox.exec();
 }
-
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
