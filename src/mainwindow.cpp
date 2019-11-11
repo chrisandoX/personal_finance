@@ -87,6 +87,7 @@ void MainWindow::on_pushButton_clicked()
     }
     msgBox.setText("All transactions loaded");
     msgBox.exec();
+    file.close();
 }
 
 
