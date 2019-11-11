@@ -6,6 +6,16 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->dateFrom->setCalendarPopup(true);
+    ui->dateFrom->setDate(QDate::currentDate());
+    ui->dateFrom->setDisplayFormat("yyyy.MM.dd");
+
+    ui->dateUntil->setCalendarPopup(true);
+    ui->dateUntil->setDate(QDate::currentDate());
+    ui->dateUntil->setMaximumDate(QDate::currentDate());
+    ui->dateUntil->setDisplayFormat("yyyy.MM.dd");
+
+
 }
 
 MainWindow::~MainWindow()
@@ -77,4 +87,17 @@ void MainWindow::on_pushButton_clicked()
     }
     msgBox.setText("All transactions loaded");
     msgBox.exec();
+}
+
+
+void MainWindow::on_dateFrom_userDateChanged(const QDate &date)
+{
+    qDebug() << "Date From" << date;
+
+}
+
+void MainWindow::on_dateUntil_userDateChanged(const QDate &date)
+{
+    qDebug() << "Date unitl";
+    ui->dateFrom->setMaximumDate(date);
 }

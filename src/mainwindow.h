@@ -25,6 +25,10 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_dateFrom_userDateChanged(const QDate &date);
+
+    void on_dateUntil_userDateChanged(const QDate &date);
+
 private:
     Ui::MainWindow *ui;
 };
