@@ -31,5 +31,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QDate date_from;
+    QDate date_until;
 };
 #endif // MAINWINDOW_H

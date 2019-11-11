@@ -92,12 +92,12 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_dateFrom_userDateChanged(const QDate &date)
 {
-    qDebug() << "Date From" << date;
-
+    date_from = date;
 }
 
 void MainWindow::on_dateUntil_userDateChanged(const QDate &date)
 {
-    qDebug() << "Date unitl";
     ui->dateFrom->setMaximumDate(date);
+    date_until = date;
+    qDebug() << date_from << "\n" << date_until;
 }
