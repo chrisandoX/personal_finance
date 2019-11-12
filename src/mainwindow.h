@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
+#include <QTableView>
 #include <QSqlError>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -31,9 +32,13 @@ private slots:
 
     void on_dateUntil_userDateChanged(const QDate &date);
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
+
     QDate date_from;
     QDate date_until;
+    QSqlTableModel *tableModel;
 };
 #endif // MAINWINDOW_H
