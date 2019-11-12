@@ -32,7 +32,7 @@ private slots:
 
     void on_dateUntil_userDateChanged(const QDate &date);
 
-    void on_pushButton_2_clicked();
+    void on_pushButtonShowSelectedTransactions_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -102,7 +102,7 @@ void MainWindow::on_dateUntil_userDateChanged(const QDate &date)
     qDebug() << date_from << "\n" << date_until;
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_pushButtonShowSelectedTransactions_clicked()
 {
     tableModel = db.getTransactionsTableInRange(date_from, date_until);
     QTableView *view = new QTableView;

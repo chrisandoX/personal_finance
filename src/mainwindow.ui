@@ -79,7 +79,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="pushButtonShowSelectedTransactions">
     <property name="geometry">
      <rect>
       <x>510</x>
