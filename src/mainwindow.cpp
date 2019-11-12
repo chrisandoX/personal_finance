@@ -3,7 +3,9 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
+    , db("phinance.db")
     , ui(new Ui::MainWindow)
+
 {
     ui->setupUi(this);
     ui->dateFrom->setCalendarPopup(true);
@@ -39,9 +41,6 @@ void MainWindow::on_pushButton_clicked()
     else
         return;
     qDebug() << fileNames;
-
-    QString database_path = "phinance.db";
-    DbManager db(database_path);
 
     if (db.isOpen())
     {
@@ -101,4 +100,13 @@ void MainWindow::on_dateUntil_userDateChanged(const QDate &date)
     ui->dateFrom->setMaximumDate(date);
     date_until = date;
     qDebug() << date_from << "\n" << date_until;
+}
+
+void MainWindow::on_pushButtonShowSelectedTransactions_clicked()
+{
+    tableModel = db.getTransactionsTableInRange(date_from, date_until);
+    QTableView *view = new QTableView;
+    view->setModel(tableModel);
+    view->hideColumn(0); // don't show the ID
+    view->show();
 }
