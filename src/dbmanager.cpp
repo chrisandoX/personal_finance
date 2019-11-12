@@ -84,4 +84,16 @@ bool DbManager::addTransaction(Transaction transaction)
     return success;
 }
 
+QSqlTableModel* DbManager::getTransactionsTableInRange(QDate date_from, QDate date_until)
+{
+ QSqlTableModel *model = new QSqlTableModel;
+ model->setTable("transactions");
+ model->setEditStrategy(QSqlTableModel::OnFieldChange);
+ QString filter = "date<'" + date_until.toString(Qt::ISODate) + "'" + " AND " + "date>'" + date_from.toString(Qt::ISODate) + "'" ;
+ qDebug() << filter;
+ model->setFilter(filter);
+ model->select();
+ return model;
+}
+
 

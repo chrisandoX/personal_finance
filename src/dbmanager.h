@@ -2,6 +2,7 @@
 #define DBMANAGER_H
 
 #include <QSqlDatabase>
+#include <QSqlTableModel>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QSqlRecord>
@@ -60,6 +61,7 @@ public:
      * @return true - transaction added successfully, false - transaction not added
      */
     bool addTransaction(Transaction transaction);
+    QSqlTableModel* getTransactionsTableInRange(QDate date_from, QDate date_until);
 
 private:
     QSqlDatabase m_db;
