@@ -22,6 +22,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    DbManager db;
+
 private slots:
     void on_pushButton_clicked();
 

@@ -3,7 +3,9 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
+    , db("phinance.db")
     , ui(new Ui::MainWindow)
+
 {
     ui->setupUi(this);
     ui->dateFrom->setCalendarPopup(true);
@@ -39,9 +41,6 @@ void MainWindow::on_pushButton_clicked()
     else
         return;
     qDebug() << fileNames;
-
-    QString database_path = "phinance.db";
-    DbManager db(database_path);
 
     if (db.isOpen())
     {
